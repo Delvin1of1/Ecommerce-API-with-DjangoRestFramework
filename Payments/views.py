@@ -182,14 +182,14 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
 class PaystackWebhookView(APIView):
     """Handle Paystack webhook notifications"""
-    permission_classes = []  # No authentication required for webhooks
+    permission_classes = []  
     
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
-        # Verify webhook signature
+       
         paystack_signature = request.headers.get('X-Paystack-Signature')
         if not paystack_signature:
             return HttpResponse(status=400)
@@ -211,13 +211,13 @@ class PaystackWebhookView(APIView):
             payload_dict = json.loads(payload)
             event = payload_dict.get('event')
             
-            # Store webhook data
+            
             webhook_data = PaystackWebhookData.objects.create(
                 payload=payload_dict,
                 event=event
             )
             
-            # Process based on event type
+           
             if event == 'charge.success':
                 self.process_successful_charge(payload_dict)
                 webhook_data.processed = True

@@ -72,7 +72,7 @@ class OrderViewSet(viewsets.ModelViewSet):
                 price=cart_item.product.price
             )
         
-        # We don't clear the cart yet - that happens after successful payment
+        # Verifying payment to proceed
         
         return Response({
             "message": "Order created successfully. Proceed to payment.",
